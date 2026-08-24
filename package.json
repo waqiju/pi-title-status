@@ -1,0 +1,13 @@
+{
+  "name": "pi-title-status",
+  "version": "0.1.0",
+  "description": "Terminal title status for pi: spinner while working, red dot + bell when idle",
+  "keywords": ["pi-package", "pi-extension", "title", "status"],
+  "license": "MIT",
+  "pi": {
+    "extensions": ["./extensions"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}
