@@ -4,14 +4,28 @@ pi 的终端标题栏状态扩展：任务运行时显示 braille spinner，空�
 
 ## 安装
 
+从 npm 安装（推荐）：
+
+```bash
+pi install npm:pi-title-status
+```
+
+也可以从 git 安装指定版本：
+
 ```bash
 pi install git:github.com/waqiju/pi-title-status@v0.1.0
 ```
 
-## 升级到新版本
+## 升级
 
 ```bash
-pi install git:github.com/waqiju/pi-title-status@v0.2.0
+pi update npm:pi-title-status
+```
+
+或安装指定新版本：
+
+```bash
+pi install npm:pi-title-status@0.2.0
 ```
 
 ## 行为

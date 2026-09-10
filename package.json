@@ -4,6 +4,14 @@
   "description": "Terminal title status for pi: spinner while working, red dot + bell when idle",
   "keywords": ["pi-package", "pi-extension", "title", "status"],
   "license": "MIT",
+  "author": "waqiju",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waqiju/pi-title-status.git"
+  },
+  "homepage": "https://github.com/waqiju/pi-title-status#readme",
+  "bugs": "https://github.com/waqiju/pi-title-status/issues",
+  "files": ["extensions"],
   "pi": {
     "extensions": ["./extensions"]
   },
