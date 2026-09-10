@@ -1,5 +1,7 @@
 # pi-title-status
 
+![preview](https://raw.githubusercontent.com/waqiju/pi-title-status/main/docs/preview.png)
+
 pi 的终端标题栏状态扩展：任务运行时显示 braille spinner，空闲时显示 🔴 并响铃（Windows Terminal 未聚焦标签会显示铃铛图标）。
 
 ## 安装

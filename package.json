@@ -13,7 +13,8 @@
   "bugs": "https://github.com/waqiju/pi-title-status/issues",
   "files": ["extensions"],
   "pi": {
-    "extensions": ["./extensions"]
+    "extensions": ["./extensions"],
+    "image": "https://raw.githubusercontent.com/waqiju/pi-title-status/main/docs/preview.png"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*"
