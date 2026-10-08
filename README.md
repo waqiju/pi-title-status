@@ -15,7 +15,7 @@ pi install npm:pi-title-status
 也可以从 git 安装指定版本：
 
 ```bash
-pi install git:github.com/waqiju/pi-title-status@v0.1.0
+pi install git:github.com/waqiju/pi-title-status@v0.2.0
 ```
 
 ## 升级
@@ -41,6 +41,30 @@ pi install npm:pi-title-status@0.2.0
 - 基础标题完全镜像 pi 原生格式。
 - 多开时每个实例只控制自己的终端标签页。
 - 红点清除时机：第一下"有效输入"（可打印字符 / 回车 / 退格 / 粘贴）即消；方向键、Ctrl 组合键、鼠标等纯转义序列不算。
+
+## 配置（可选）
+
+不配也能用。想改默认行为，新建 `~/.pi/agent/pi-title-status.json`（若设了 `PI_CODING_AGENT_DIR` 则放在该目录下）：
+
+```json
+{
+  "doneMark": "🔴",
+  "bell": true,
+  "spinIntervalMs": 100,
+  "template": "{mark}{app} - {session} - {cwd}"
+}
+```
+
+| 字段 | 默认 | 说明 |
+|------|------|------|
+| `doneMark` | `🔴` | 空闲标记，可改 `✅` / `[done]` 等 |
+| `bell` | `true` | 空闲时是否响铃 |
+| `spinIntervalMs` | `100` | 旋转帧间隔，下限 20ms |
+| `template` | `{mark}{app} - {session} - {cwd}` | 完整标题模板 |
+
+模板占位符：`{mark}` 状态标记（spinner/红点，自带尾随空格）、`{app}` 应用名 `π`、`{session}` 会话名、`{cwd}` 目录名。会话名为空时 ` -  - ` 空段会自动折叠。
+
+只写想改的字段即可，其余用默认值；新会话生效。JSON 语法错误会整体回退默认值并提示一次。
 
 ## 本地开发
 

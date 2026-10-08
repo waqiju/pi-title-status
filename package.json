@@ -1,6 +1,6 @@
 {
   "name": "pi-title-status",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Terminal title status for pi: spinner while working, red dot + bell when idle",
   "keywords": [
     "pi-package",
