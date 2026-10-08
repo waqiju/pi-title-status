@@ -9,6 +9,9 @@
     "status"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "author": "waqiju",
   "repository": {
     "type": "git",
