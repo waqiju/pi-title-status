@@ -66,6 +66,10 @@ pi install npm:pi-title-status@0.2.0
 
 只写想改的字段即可，其余用默认值；新会话生效。JSON 语法错误会整体回退默认值并提示一次。
 
+### 已知限制
+
+启动（或 `/new`、session 切换）后到第一次任务开始前，标题显示 pi 原生格式而非自定义 template——pi 会在扩展的 `session_start` 之后才写入原生标题，扩展无法抢在前面。第一次任务运行后即按 template 渲染。
+
 ## 本地开发
 
 ```bash
