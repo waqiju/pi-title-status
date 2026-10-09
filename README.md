@@ -15,7 +15,7 @@ pi install npm:pi-title-status
 也可以从 git 安装指定版本：
 
 ```bash
-pi install git:github.com/waqiju/pi-title-status@v0.2.0
+pi install git:github.com/waqiju/pi-title-status@v0.2.1
 ```
 
 ## 升级
@@ -27,7 +27,7 @@ pi update npm:pi-title-status
 或安装指定新版本：
 
 ```bash
-pi install npm:pi-title-status@0.2.0
+pi install npm:pi-title-status@0.2.1
 ```
 
 ## 行为
@@ -68,7 +68,7 @@ pi install npm:pi-title-status@0.2.0
 
 ### 已知限制
 
-启动（或 `/new`、session 切换）后到第一次任务开始前，标题显示 pi 原生格式而非自定义 template——pi 会在扩展的 `session_start` 之后才写入原生标题，扩展无法抢在前面。第一次任务运行后即按 template 渲染。
+启动（或 `/new`、session 切换）后的一小段时间，标题是 pi 原生格式——pi 会在扩展的 `session_start` 之后才写入原生标题，扩展抢不到前面。第一次有效击键（可打印字符 / 回车 / 退格 / 粘贴）或第一个任务开始时即接管为 template 渲染。
 
 ## 本地开发
 

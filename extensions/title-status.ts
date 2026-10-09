@@ -7,6 +7,8 @@
  * - 红点清除时机：用户产生"有效输入"（可打印字符 / 回车 / 退格 / 粘贴）的第一下击键即消；
  *   方向键、Ctrl 组合键、鼠标等纯转义序列不算
  * - 基础标题默认镜像 pi 原生格式：π - {session名} - {目录名}
+ * - 启动/切换 session 后 pi 会晚于扩展写入原生标题（template 暂时不生效）；
+ *   第一次有效击键或第一个任务开始时即接管为 template 渲染
  *
  * 安装：pi install npm:pi-title-status
  *
@@ -96,6 +98,9 @@ export default function (pi: ExtensionAPI) {
 	let timer: ReturnType<typeof setInterval> | null = null;
 	let frame = 0;
 	let dotVisible = false;
+	// pi 启动/切换 session（rebind）会在扩展的 session_start 之后才写原生标题，把 template 盖掉；
+	// 此标志记录我们是否已实际写入过标题，未认领时由第一次有效击键触发重绘接管
+	let titleClaimed = false;
 	let nameCache: string | undefined;
 	let unsubscribeInput: (() => void) | null = null;
 	let config: TitleConfig = DEFAULTS;
@@ -145,6 +150,7 @@ export default function (pi: ExtensionAPI) {
 		const firstTime = !dotVisible;
 		stopSpinner();
 		dotVisible = true;
+		titleClaimed = true;
 		ctx.ui.setTitle(renderTitle(config.doneMark));
 		if (config.bell && firstTime) {
 			ringBell(ctx);
@@ -154,6 +160,7 @@ export default function (pi: ExtensionAPI) {
 	function clearDot(ctx: ExtensionContext): void {
 		if (!dotVisible) return;
 		dotVisible = false;
+		titleClaimed = true;
 		ctx.ui.setTitle(renderTitle(null));
 	}
 
@@ -167,6 +174,7 @@ export default function (pi: ExtensionAPI) {
 		}
 		refreshNameCache();
 		dotVisible = false;
+		titleClaimed = false; // rebind 后 pi 原生标题会重新占位，等待再次认领
 		stopSpinner();
 		// 不在这里 setTitle：pi 自己的 updateTerminalTitle 会设置，格式一致，无需抢写
 		// 注册终端原始输入监听（interactive 模式专属），用于"有效输入"即时清红点
@@ -174,8 +182,13 @@ export default function (pi: ExtensionAPI) {
 		unsubscribeInput = null;
 		if (ctx.mode === "tui") {
 			unsubscribeInput = ctx.ui.onTerminalInput((data) => {
-				if (dotVisible && isMeaningfulInput(data)) {
+				if (!isMeaningfulInput(data)) return undefined; // 方向键/鼠标/终端自动应答等纯转义序列不算
+				if (dotVisible) {
 					clearDot(ctx);
+				} else if (!titleClaimed) {
+					// 启动窗口期：pi 原生标题还占着，第一次有效击键即用 template 接管
+					titleClaimed = true;
+					ctx.ui.setTitle(renderTitle(null));
 				}
 				return undefined; // 不消费、不修改输入
 			});
@@ -192,6 +205,7 @@ export default function (pi: ExtensionAPI) {
 		frame = 0;
 		timer = setInterval(() => {
 			const mark = SPINNER[frame++ % SPINNER.length];
+			titleClaimed = true;
 			ctx.ui.setTitle(renderTitle(mark));
 		}, config.spinIntervalMs);
 	});
@@ -206,6 +220,7 @@ export default function (pi: ExtensionAPI) {
 	pi.on("session_info_changed", async (event, ctx) => {
 		nameCache = event.name;
 		if (timer) return; // spinner 下一帧自动带出新名字
+		titleClaimed = true;
 		ctx.ui.setTitle(dotVisible ? renderTitle(config.doneMark) : renderTitle(null));
 	});
 
